@@ -5,11 +5,22 @@ import axios from "axios";
 import "./product.css";
 import Link from "next/link";
 
-export default function Home({ params }) {
+interface Product {
+  id: string;
+  title: string;
+  price: string;
+  description: string;
+  category: {
+    name: string;
+    id: number;
+  };
+}
+
+export default function Home({ params }: { params: { title: string } }) {
   const query = params.title;
   const API = `https://api.escuelajs.co/api/v1/products?title=${query}`;
 
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState<Product | null>(null);
   const [accessToken, setAccessToken] = useState("");
 
   useEffect(() => {

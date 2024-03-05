@@ -23,7 +23,7 @@ export default function Home() {
           password: "changeme",
         }
       );
-      const { access_token, refresh_token } = response;
+      const { access_token, refresh_token } = response as any;
       setAccessToken(access_token);
       setRefreshToken(refresh_token);
       localStorage.setItem("accessToken", access_token);
@@ -57,7 +57,7 @@ export default function Home() {
     }
   }, [checkAccessTokenValidity, accessToken]);
 
-  const onSubmitForm = (e) => {
+  const onSubmitForm = (e: any) => {
     e.preventDefault();
     login();
   };

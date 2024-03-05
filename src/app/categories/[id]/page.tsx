@@ -6,10 +6,19 @@ import Link from "next/link";
 
 import "./product-card.css";
 
-export default function Home({ params }) {
+interface Product {
+  id: string;
+  title: string;
+  category: {
+    name: string;
+    id: number;
+  };
+}
+
+export default function Products({ params }: { params: { id: string } }) {
   const { id } = params;
   const API = `https://api.escuelajs.co/api/v1/products/?categoryId=${id}`;
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [accessToken, setAccessToken] = useState("");
 
   useEffect(() => {
@@ -19,7 +28,7 @@ export default function Home({ params }) {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(API, {
+      const response = await axios.get<Product[]>(API, {
         headers: {
           Authorization: "Bearer " + accessToken,
         },
@@ -53,7 +62,9 @@ export default function Home({ params }) {
       <div className="back">
         <Link href={`/categories/`}>GO BACK</Link>
       </div>
-      <h1 className="product-card-page-header">{categoryName}'s Products</h1>
+      <h1 className="product-card-page-header">
+        {categoryName + "'"}s Products
+      </h1>
       <span className="product-card-page-len">count: {products.length}</span>
       <div className="product-cards-wrapper">
         {products.map(({ id, title }) => {
