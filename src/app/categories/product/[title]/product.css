@@ -1,0 +1,38 @@
+.product {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+}
+.product-img {
+  overflow: hidden;
+}
+.catergory-img img {
+  width: 100%;
+}
+
+.product-data {
+  padding: 2rem;
+}
+
+.product-description {
+  font-size: 1.2rem;
+  display: block;
+  margin: 10px 0;
+}
+
+.product-price {
+  font-size: 1rem;
+  display: block;
+  margin: 10px 0;
+  font-weight: 700;
+}
+.product-cat {
+  font-size: 1rem;
+  display: block;
+  margin: 10px 0;
+}
+
+.back {
+  display: block;
+  margin-bottom: 10px;
+}

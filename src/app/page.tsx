@@ -1,68 +1,97 @@
 "use client";
 
-import { useState } from "react";
-import styles from "./page.module.css";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import departments from "./departments.json";
-import doctors from "./doctors.json";
+import { useRouter } from "next/navigation";
+import "./login.css";
 
 export default function Home() {
-  const API = "https://dev.minaini.com:2053/r";
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [departmentId, setDepartmentId] = useState(null);
-  const [fetchedDoctors, setFetchedDoctors] = useState([]);
+  const router = useRouter();
 
-  const dep = departments.results.filter((d) => d.is_active === true);
+  const API = "";
+  const [email, setEmail] = useState("john@mail.com");
+  const [password, setPassword] = useState("changeme");
+  const [accessToken, setAccessToken] = useState("");
+  const [refreshToken, setRefreshToken] = useState("");
 
   const login = async () => {
-    axios
-      .post(API, {
-        email: email,
-        password: password,
-        app_type: "patient",
-      })
-      .then((res) => {
-        console.log(res);
-      });
+    try {
+      const response = axios.post(
+        "https://api.escuelajs.co/api/v1/auth/login",
+        {
+          email: "john@mail.com",
+          password: "changeme",
+        }
+      );
+      const { access_token, refresh_token } = response;
+      setAccessToken(access_token);
+      setRefreshToken(refresh_token);
+      localStorage.setItem("accessToken", access_token);
+      localStorage.setItem("refreshToken", refresh_token);
+      router.push("/categories");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
-  const fetchDoctors = async ({ id }) => {
-    setDepartmentId(id);
-    const docs = doctors.results.filter((doctor) => doctor.department.id == id);
-    console.log(docs);
-    setFetchedDoctors(docs);
+  const refreshAccessToken = async () => {
+    const refreshAPI = API + "token/refresh";
+    try {
+      const response = await axios.post(refreshAPI, {
+        refresh_token: localStorage.getItem("refreshToken"),
+      });
+      const newAccessToken = response.data.access;
+      setAccessToken(newAccessToken);
+      localStorage.setItem("accessToken", newAccessToken);
+    } catch (error) {
+      console.error("Failed to refresh access token:", error);
+    }
   };
+
+  const checkAccessTokenValidity = () => refreshAccessToken();
+
+  useEffect(() => {
+    if (accessToken) {
+      const intervalId = setInterval(checkAccessTokenValidity, 5 * 60 * 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, [checkAccessTokenValidity, accessToken]);
 
   const onSubmitForm = (e) => {
     e.preventDefault();
-    console.log(email);
-    console.log(password);
     login();
   };
 
   return (
-    <main>
-      <form>
-        <input
-          type="text"
-          value={email}
-          name="email"
-          placeholder="email"
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-        />
-        <input
-          type="password"
-          value={password}
-          name="password"
-          placeholder="password"
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        />
+    <main className="login-container">
+      <form className="login-form">
+        <h1>Login</h1>
+        <div className="login-box">
+          <input
+            className=""
+            type="text"
+            value={email}
+            name="email"
+            placeholder="Email"
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          />
+        </div>
+        <div className="login-box">
+          <input
+            className=""
+            type="password"
+            value={password}
+            name="password"
+            placeholder="Password"
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
+        </div>
         <button
+          className="login-submit"
           onClick={onSubmitForm}
           disabled={!email.trim() || !password.trim()}
           type="submit"
@@ -70,33 +99,6 @@ export default function Home() {
           Submit
         </button>
       </form>
-
-      <div>
-        <h1>Departments</h1>
-        <div>
-          {dep.map(({ id, name, image }) => {
-            return (
-              <button onClick={() => fetchDoctors({ id })} key={id}>
-                <h3>{name}</h3>
-                {image && <img width={40} src={image} />}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-      <div>
-        <h1>Doctors</h1>
-        <div>
-          {fetchedDoctors.map(({ id, user }) => {
-            return (
-              <div key={id}>
-                <span>name: {user.name}</span> <br />
-                {user?.image && <img width={100} src={user?.image} />}
-              </div>
-            );
-          })}
-        </div>
-      </div>
     </main>
   );
 }
