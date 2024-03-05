@@ -1,0 +1,88 @@
+{
+  "count": 9,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 5,
+      "created_at": "2024-02-01T15:08:16.594416Z",
+      "updated_at": "2024-02-01T15:30:45.187797Z",
+      "name": "Dermatology",
+      "name_ar": "جلدية",
+      "image": "https://files.minaini.com/departments/DERMATOLOGY.jpg",
+      "is_active": true
+    },
+    {
+      "id": 3,
+      "created_at": "2023-12-18T11:47:52.277347Z",
+      "updated_at": "2024-02-09T14:26:37.268032Z",
+      "name": "old_Neurology",
+      "name_ar": "عصبية",
+      "image": "https://files.minaini.com/departments/Group_476.png",
+      "is_active": false
+    },
+    {
+      "id": 9,
+      "created_at": "2024-03-04T06:35:53.714801Z",
+      "updated_at": "2024-03-04T06:35:53.714847Z",
+      "name": "Ophthalmology",
+      "name_ar": "طب العيون",
+      "image": null,
+      "is_active": true
+    },
+    {
+      "id": 4,
+      "created_at": "2023-12-18T11:48:30.819391Z",
+      "updated_at": "2024-02-01T15:08:09.414685Z",
+      "name": "old_Dermatology",
+      "name_ar": "جلدية",
+      "image": "https://files.minaini.com/departments/Group_476.png",
+      "is_active": false
+    },
+    {
+      "id": 2,
+      "created_at": "2023-12-18T11:47:24.241328Z",
+      "updated_at": "2024-02-01T15:11:54.013133Z",
+      "name": "old_Orthopedics",
+      "name_ar": "عظام و كسور",
+      "image": "https://files.minaini.com/departments/Group_476.png",
+      "is_active": false
+    },
+    {
+      "id": 1,
+      "created_at": "2023-12-15T12:52:51.513226Z",
+      "updated_at": "2024-02-01T15:12:19.269402Z",
+      "name": "old_Cardiology",
+      "name_ar": "قلبية",
+      "image": "https://files.minaini.com/departments/Group_476.png",
+      "is_active": false
+    },
+    {
+      "id": 8,
+      "created_at": "2024-02-01T15:12:26.282922Z",
+      "updated_at": "2024-02-01T15:26:07.086171Z",
+      "name": "Cardiology",
+      "name_ar": "قلبية",
+      "image": "https://files.minaini.com/departments/Cardiology.png",
+      "is_active": true
+    },
+    {
+      "id": 7,
+      "created_at": "2024-02-01T15:11:38.093289Z",
+      "updated_at": "2024-02-01T15:26:20.453980Z",
+      "name": "Orthopedics",
+      "name_ar": "عظام و كسور",
+      "image": "https://files.minaini.com/departments/Orthopedics.jpg",
+      "is_active": true
+    },
+    {
+      "id": 6,
+      "created_at": "2024-02-01T15:10:37.738716Z",
+      "updated_at": "2024-02-01T15:26:32.610246Z",
+      "name": "Neurology",
+      "name_ar": "عصبية",
+      "image": "https://files.minaini.com/departments/Neurology.jpg",
+      "is_active": true
+    }
+  ]
+}

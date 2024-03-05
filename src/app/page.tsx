@@ -1,94 +1,101 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
 import styles from "./page.module.css";
+import axios from "axios";
+import departments from "./departments.json";
+import doctors from "./doctors.json";
 
 export default function Home() {
+  const API = "https://dev.minaini.com:2053/r";
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [departmentId, setDepartmentId] = useState(null);
+  const [fetchedDoctors, setFetchedDoctors] = useState([]);
+
+  const dep = departments.results.filter((d) => d.is_active === true);
+
+  const login = async () => {
+    axios
+      .post(API, {
+        email: email,
+        password: password,
+        app_type: "patient",
+      })
+      .then((res) => {
+        console.log(res);
+      });
+  };
+
+  const fetchDoctors = async ({ id }) => {
+    setDepartmentId(id);
+    const docs = doctors.results.filter((doctor) => doctor.department.id == id);
+    console.log(docs);
+    setFetchedDoctors(docs);
+  };
+
+  const onSubmitForm = (e) => {
+    e.preventDefault();
+    console.log(email);
+    console.log(password);
+    login();
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
+    <main>
+      <form>
+        <input
+          type="text"
+          value={email}
+          name="email"
+          placeholder="email"
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+        />
+        <input
+          type="password"
+          value={password}
+          name="password"
+          placeholder="password"
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+        />
+        <button
+          onClick={onSubmitForm}
+          disabled={!email.trim() || !password.trim()}
+          type="submit"
+        >
+          Submit
+        </button>
+      </form>
+
+      <div>
+        <h1>Departments</h1>
         <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+          {dep.map(({ id, name, image }) => {
+            return (
+              <button onClick={() => fetchDoctors({ id })} key={id}>
+                <h3>{name}</h3>
+                {image && <img width={40} src={image} />}
+              </button>
+            );
+          })}
         </div>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      <div>
+        <h1>Doctors</h1>
+        <div>
+          {fetchedDoctors.map(({ id, user }) => {
+            return (
+              <div key={id}>
+                <span>name: {user.name}</span> <br />
+                {user?.image && <img width={100} src={user?.image} />}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </main>
   );
